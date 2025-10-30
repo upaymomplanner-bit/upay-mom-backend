@@ -11,13 +11,9 @@ A FastAPI-based backend for the UPay MOM application.
 
 2. Run the application:
    ```bash
-   python main.py
+   uv run fastapi dev app/main.py --host 0.0.0.0 --port 8000
    ```
 
-   Or using uvicorn directly:
-   ```bash
-   uvicorn main:app --reload
-   ```
 
 3. Open your browser to `http://localhost:8000` to see the API documentation at `http://localhost:8000/docs`
 
