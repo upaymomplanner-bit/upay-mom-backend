@@ -5,11 +5,12 @@ from functools import lru_cache
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
 
+    gemini_api_key: str
     gemini_model: str = "gemini-2.5-pro"
     max_file_size: int = 10 * 1024 * 1024  # 10MB default
 
     class Config:
-        env_file = ".env"
+        env_file = ".env.development"
         env_file_encoding = "utf-8"
 
 
