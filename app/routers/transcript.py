@@ -33,7 +33,6 @@ async def process_transcript(
     - Participants
     - Key topics discussed
     - Action items
-    - Decisions made
     - Next steps
 
     Args:
