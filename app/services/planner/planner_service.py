@@ -35,6 +35,7 @@ class MicrosoftPlannerService:
         Args:
             meeting_tasks: The structured tasks extracted from the meeting transcript
         """
+        # TODO: Discuss with UPAY team whether meetings tend to discuss tasks within same project or other way around and then parallelize according to those needs.
         for task_group in meeting_tasks.task_groups:
             plan_id = await self.get_or_create_plan(task_group.plan_association)
             for task in task_group.tasks:
