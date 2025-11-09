@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     microsoft_tenant_id: str | None = None
     microsoft_client_id: str | None = None
     microsoft_client_secret: str | None = None
+    microsoft_planner_container_url: str = ""
 
     class Config:
         env_file = ".env.development"
