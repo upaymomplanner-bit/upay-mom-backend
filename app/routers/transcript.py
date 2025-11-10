@@ -1,19 +1,15 @@
 from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, Form
-from msgraph.graph_service_client import GraphServiceClient
 from app.schemas.transcript import (
     MeetingExtractionResult,
     MeetingDetails,
 )
 
-from app.services.planner.planner_service import (
-    MicrosoftPlannerService,
-)
+from app.services.planner.planner_service import MicrosoftPlannerService
+from app.services.planner.dependencies import get_planner_service
 
 from app.services.gemini_client import GeminiClient
 from app.services.file_processor import FileProcessor
 from app.config import get_settings, Settings
-
-from app.services.auth.planner_auth import get_graph_client
 
 transcript_router = APIRouter(prefix="/transcripts", tags=["transcripts"])
 
@@ -97,20 +93,17 @@ async def process_transcript(
 @transcript_router.post("/upload_tasks", status_code=204)
 async def upload_transcript_tasks(
     extracted_tasks: MeetingExtractionResult,
-    graph_client: GraphServiceClient = Depends(get_graph_client),
-    settings: Settings = Depends(get_settings),
+    planner_service: MicrosoftPlannerService = Depends(get_planner_service),
 ) -> None:
     """
     Upload extracted tasks from the transcript to Microsoft Planner
 
     Args:
         extracted_tasks: The structured tasks extracted from the transcript
+        planner_service: Microsoft Planner service (injected)
     """
 
     try:
-        planner_service = MicrosoftPlannerService(
-            graph_client, settings.microsoft_planner_container_url
-        )
         await planner_service.add_tasks(extracted_tasks)
     except ValueError as ve:
         raise HTTPException(status_code=400, detail=str(ve))
