@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     microsoft_client_id: str | None = None
     microsoft_client_secret: str | None = None
     microsoft_planner_container_url: str = ""
+    supabase_url: str = ""
+    supabase_service_role_key: str = ""
 
     class Config:
         env_file = ".env.development"
