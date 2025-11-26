@@ -1,7 +1,7 @@
 from msgraph.graph_service_client import GraphServiceClient
 from msgraph.generated.models.planner_plan import PlannerPlan
 from msgraph.generated.models.planner_plan_container import PlannerPlanContainer
-from schemas.transcript import PlanAssociation, PlanAssociationType
+from ...schemas.transcript import PlanAssociation, PlanAssociationType
 
 
 class PlannerPlanService:

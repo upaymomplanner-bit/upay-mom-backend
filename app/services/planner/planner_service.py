@@ -1,4 +1,4 @@
-from schemas.transcript import MeetingExtractionResult
+from ...schemas.transcript import MeetingExtractionResult
 from app.services.planner.planner_plan_service import PlannerPlanService
 from app.services.planner.planner_task_service import PlannerTaskService
 

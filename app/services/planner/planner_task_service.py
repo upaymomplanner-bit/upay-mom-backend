@@ -1,10 +1,9 @@
 from msgraph.graph_service_client import GraphServiceClient
-from schemas.transcript import TranscriptionTask
+from ...schemas.transcript import TranscriptionTask, CheckListItem
 from app.services.planner.user_service import UserService
 from datetime import datetime
 from msgraph.generated.models.planner_task import PlannerTask
 from msgraph.generated.models.planner_task_details import PlannerTaskDetails
-from schemas.transcript import CheckListItem
 from app.services.planner.planner_formatter import PlannerFormatter
 
 

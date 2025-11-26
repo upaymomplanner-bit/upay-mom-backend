@@ -1,4 +1,4 @@
-from schemas.transcript import TaskAssignment
+from ...schemas.transcript import TaskAssignment
 from msgraph.generated.models.planner_assignments import PlannerAssignments
 
 
