@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException
 from supabase import acreate_client, AsyncClient
 
-from config import get_settings
+from ...config import get_settings
 
 
 # CHECK: this is privileged access, only with service role key

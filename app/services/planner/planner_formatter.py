@@ -1,5 +1,5 @@
 from msgraph.generated.models.planner_checklist_items import PlannerChecklistItems
-from schemas.transcript import CheckListItem
+from ...schemas.transcript import CheckListItem
 import uuid
 
 

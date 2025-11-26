@@ -1,7 +1,6 @@
-import asyncio
 from azure.identity.aio import ClientSecretCredential
 from msgraph.graph_service_client import GraphServiceClient
-from config import get_settings
+from ...config import get_settings
 
 
 # TODO: Replace the default client secret credential with an on behalf of credential flow
