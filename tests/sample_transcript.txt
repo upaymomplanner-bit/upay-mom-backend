@@ -1,0 +1,11 @@
+Meeting Date: 2023-10-27
+Attendees: Alice, Bob
+
+Alice: Hi Bob, let's discuss the project updates.
+Bob: Sure, Alice. I've completed the backend API for user authentication.
+Alice: Great. We need to integrate it with the frontend by next Friday.
+Bob: Okay, I'll handle the integration.
+Alice: Also, we need to prepare the monthly report. Can you draft it?
+Bob: Yes, I'll draft the report by Wednesday.
+Alice: Perfect. Let's also schedule a team lunch for next week.
+Bob: Sounds good. I'll send out a calendar invite.
