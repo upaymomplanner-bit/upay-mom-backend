@@ -13,3 +13,7 @@ wheels/
 .env
 .env.*
 !.env.example
+
+# Test artifacts
+tests/sample_transcript.pdf
+gemini_output.json

@@ -6,6 +6,8 @@ from app.schemas.transcript import (
 
 from app.services.planner.planner_service import MicrosoftPlannerService
 from app.services.planner.dependencies import get_planner_service
+from app.services.database.meeting_service import MeetingDatabaseService
+from app.services.auth.deps import get_supabase_client
 
 from app.services.gemini_client import GeminiClient
 from app.services.file_processor import FileProcessor
@@ -112,4 +114,61 @@ async def upload_transcript_tasks(
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Failed to upload tasks to Planner: {str(e)}"
+        )
+
+
+@transcript_router.post("/save", status_code=201)
+async def save_transcript(
+    extracted_tasks: MeetingExtractionResult,
+    supabase_client = Depends(get_supabase_client),
+    planner_service: MicrosoftPlannerService = Depends(get_planner_service),
+):
+    """
+    Save meeting and tasks to database, then optionally upload to Microsoft Planner.
+
+    This endpoint:
+    1. Saves the meeting to the 'meetings' table
+    2. Saves all tasks to the 'tasks' table
+    3. Attempts to sync tasks to Microsoft Planner (non-blocking)
+
+    Args:
+        extracted_tasks: The meeting extraction result from Gemini
+        supabase_client: Supabase client (injected)
+        planner_service: Microsoft Planner service (injected)
+
+    Returns:
+        dict: Contains meeting_id and sync status
+    """
+    try:
+        db_service = MeetingDatabaseService(supabase_client)
+
+        # Save to database
+        meeting_id = await db_service.save_meeting(extracted_tasks)
+        task_ids = await db_service.save_tasks(meeting_id, extracted_tasks.task_groups)
+
+        # Try to sync to Planner (non-blocking - errors are logged but not fatal)
+        planner_sync_status = "success"
+        planner_error = None
+
+        try:
+            await planner_service.add_tasks(extracted_tasks)
+        except Exception as e:
+            planner_sync_status = "failed"
+            planner_error = str(e)
+            # Log the error but don't fail the request
+            print(f"Planner sync failed: {e}")
+
+        return {
+            "meeting_id": str(meeting_id),
+            "task_count": len(task_ids),
+            "planner_sync_status": planner_sync_status,
+            "planner_error": planner_error,
+            "message": "Meeting and tasks saved successfully" if planner_sync_status == "success"
+                       else "Meeting and tasks saved, but Planner sync failed"
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to save transcript: {str(e)}"
         )

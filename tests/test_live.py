@@ -1,4 +1,6 @@
 import pytest
+import os
+import json
 from app.schemas.transcript import MeetingDetails
 
 @pytest.mark.asyncio
@@ -10,9 +12,13 @@ async def test_live_process_transcript(live_client):
         attendees=["Alice", "Bob"]
     )
 
-    # Use a real file (we will create this)
-    with open("tests/sample_transcript.txt", "rb") as f:
-        files = {"file": ("sample_transcript.txt", f, "text/plain")}
+    # Use the PDF file
+    pdf_path = "tests/sample_transcript.pdf"
+    if not os.path.exists(pdf_path):
+        pytest.skip(f"PDF file not found at {pdf_path}")
+
+    with open(pdf_path, "rb") as f:
+        files = {"file": ("sample_transcript.pdf", f, "application/pdf")}
         data = {"meeting_details": meeting_details.model_dump_json()}
 
         response = live_client.post("/transcripts/process", files=files, data=data)
@@ -22,6 +28,11 @@ async def test_live_process_transcript(live_client):
 
     assert response.status_code == 200
     result = response.json()
+
+    # Save output to file
+    with open("gemini_output.json", "w") as f:
+        json.dump(result, f, indent=2)
+    print("\nSaved Gemini output to gemini_output.json")
 
     # Basic validation of structure
     assert "meeting_summary" in result
