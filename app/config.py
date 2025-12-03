@@ -16,8 +16,9 @@ class Settings(BaseSettings):
     supabase_service_role_key: str = ""
 
     class Config:
-        env_file = ".env.development"
+        env_file = (".env", ".env.development")
         env_file_encoding = "utf-8"
+        extra = "ignore"
 
 
 @lru_cache()

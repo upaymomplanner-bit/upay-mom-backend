@@ -16,7 +16,7 @@ transcript_router = APIRouter(prefix="/transcripts", tags=["transcripts"])
 
 def get_gemini_client(settings: Settings = Depends(get_settings)) -> GeminiClient:
     """Dependency to get GeminiClient instance."""
-    return GeminiClient(model=settings.gemini_model)
+    return GeminiClient(api_key=settings.gemini_api_key, model=settings.gemini_model)
 
 
 @transcript_router.post("/process", response_model=MeetingExtractionResult)

@@ -10,5 +10,6 @@ wheels/
 .venv
 
 # environments
+.env
 .env.*
 !.env.example

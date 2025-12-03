@@ -8,9 +8,9 @@ from app.schemas.transcript import GeminiExtractionResponse
 class GeminiClient:
     """Reusable client for interacting with Google Gemini API."""
 
-    def __init__(self, model: str = "gemini-2.5-flash") -> None:
+    def __init__(self, api_key: str, model: str = "gemini-2.5-flash") -> None:
         """Initialize Gemini client with API key and model configuration."""
-        self.client = genai.Client()
+        self.client = genai.Client(api_key=api_key)
         self.model = model
 
     def get_system_prompt(self) -> str:
