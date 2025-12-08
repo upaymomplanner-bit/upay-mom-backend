@@ -4,6 +4,7 @@ from ...schemas.transcript import MeetingExtractionResult, TaskPriority
 from app.services.planner.planner_plan_service import PlannerPlanService
 from app.services.planner.planner_task_service import PlannerTaskService
 from app.services.auth.deps import get_supabase_client
+from typing import Optional
 
 log = logging.getLogger(__name__)
 
@@ -16,8 +17,8 @@ class MicrosoftPlannerService:
 
     def __init__(
         self,
-        plan_service: PlannerPlanService,
-        task_service: PlannerTaskService,
+        plan_service: Optional[PlannerPlanService] = None,
+        task_service: Optional[PlannerTaskService] = None,
     ):
         self.plan_service = plan_service
         self.task_service = task_service
@@ -42,6 +43,10 @@ class MicrosoftPlannerService:
         Args:
             meeting_tasks: The structured tasks extracted from the meeting transcript
         """
+        if not self.plan_service or not self.task_service:
+            log.warning("Planner services not available. Skipping add_tasks.")
+            return
+
         log.info("Starting add_tasks operation")
         try:
             supabase = await get_supabase_client()

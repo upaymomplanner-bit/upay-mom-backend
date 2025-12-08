@@ -34,7 +34,7 @@ class MeetingDatabaseService:
 
         meeting_data = {
             "id": str(meeting_id),
-            "title": meeting_result.meeting_details.meeting_type or "Untitled Meeting",
+            "title": meeting_result.meeting_details.meeting_title or "Untitled Meeting",
             "date": meeting_result.meeting_details.meeting_date,
             "summary": meeting_result.meeting_summary,
             "transcript_path": None,  # Can be added later if storing files

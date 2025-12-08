@@ -1,10 +1,11 @@
 from azure.identity.aio import ClientSecretCredential
 from msgraph.graph_service_client import GraphServiceClient
+from typing import Optional
 from ...config import get_settings
 
 
 # TODO: Replace the default client secret credential with an on behalf of credential flow
-def get_graph_client() -> GraphServiceClient:
+def get_graph_client() -> Optional[GraphServiceClient]:
     """
     Initialize and return a Microsoft Graph API client for Planner interactions.
     """
@@ -19,6 +20,9 @@ def get_graph_client() -> GraphServiceClient:
     microsoft_client_secret = (
         settings.microsoft_client_secret if settings.microsoft_client_secret else ""
     )
+
+    if not microsoft_client_secret:
+        return None
 
     credential = ClientSecretCredential(
         tenant_id=microsoft_tenant_id,
