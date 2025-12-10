@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "uv pip install -r pyproject.toml",
+  "installCommand": "uv sync",
   "cleanUrls": true,
   "git": {
     "deploymentEnabled": {
