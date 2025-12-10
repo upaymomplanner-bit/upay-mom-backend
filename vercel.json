@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "uv sync",
+  "cleanUrls": true,
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "dev": true,
+      "*": false
+    }
+  },
+  "regions": ["bom1"]
+}
