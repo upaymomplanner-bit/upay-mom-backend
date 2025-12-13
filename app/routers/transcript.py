@@ -1,4 +1,5 @@
 from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, Form
+from datetime import datetime
 from app.schemas.transcript import (
     MeetingExtractionResult,
     MeetingDetails,
@@ -144,7 +145,18 @@ async def save_transcript(
 
         # Save to database
         meeting_id = await db_service.save_meeting(extracted_tasks)
-        task_ids = await db_service.save_tasks(meeting_id, extracted_tasks.task_groups)
+
+        # Extract year from meeting date or use current year
+        year = datetime.utcnow().year
+        if extracted_tasks.meeting_date:
+            try:
+                # Handle ISO format with potential Z
+                dt = datetime.fromisoformat(extracted_tasks.meeting_date.replace("Z", "+00:00"))
+                year = dt.year
+            except ValueError:
+                pass
+
+        task_ids = await db_service.save_tasks(meeting_id, extracted_tasks.task_groups, year=year)
 
         # Try to sync to Planner (non-blocking - errors are logged but not fatal)
         planner_sync_status = "success"

@@ -17,3 +17,5 @@ wheels/
 # Test artifacts
 tests/sample_transcript.pdf
 gemini_output.json
+
+report.*

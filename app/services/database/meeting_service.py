@@ -55,6 +55,7 @@ class MeetingDatabaseService:
         self,
         meeting_id: UUID,
         task_groups: List[TaskGroup],
+        year: int = datetime.utcnow().year,
     ) -> List[UUID]:
         """
         Save tasks to the tasks table.
@@ -62,6 +63,7 @@ class MeetingDatabaseService:
         Args:
             meeting_id: UUID of the parent meeting
             task_groups: List of task groups from Gemini extraction
+            year: Year for the goals (default: current year)
 
         Returns:
             List of created task UUIDs
@@ -69,21 +71,46 @@ class MeetingDatabaseService:
         task_ids = []
 
         for task_group in task_groups:
+            # Create goal for this task group
+            goal_id = await self._save_goal(task_group, year)
+
             for task in task_group.tasks:
                 task_id = await self._save_single_task(
                     meeting_id=meeting_id,
                     task=task,
-                    plan_title=task_group.plan_association.plan_title
+                    plan_title=task_group.plan_association.plan_title,
+                    goal_id=goal_id
                 )
                 task_ids.append(task_id)
 
         return task_ids
+
+    async def _save_goal(self, task_group: TaskGroup, year: int) -> UUID:
+        """Save a task group as a goal."""
+        goal_id = uuid4()
+
+        goal_data = {
+            "id": str(goal_id),
+            "title": task_group.plan_association.plan_title,
+            "description": task_group.group_description,
+            "year": year,
+            "created_at": datetime.utcnow().isoformat(),
+            "updated_at": datetime.utcnow().isoformat(),
+        }
+
+        result = await self.client.table("goals").insert(goal_data).execute()
+
+        if not result.data:
+            raise Exception(f"Failed to insert goal '{task_group.plan_association.plan_title}' into database")
+
+        return goal_id
 
     async def _save_single_task(
         self,
         meeting_id: UUID,
         task: TranscriptionTask,
         plan_title: str,
+        goal_id: Optional[UUID] = None,
     ) -> UUID:
         """Save a single task to the database."""
         task_id = uuid4()
@@ -109,7 +136,7 @@ class MeetingDatabaseService:
             "department_id": None,  # Can be added later
             "planner_task_id": None,  # Will be updated after Planner sync
             "planner_plan_id": None,  # Can be updated after Planner sync
-            "goal_id": None,  # Can be linked later
+            "goal_id": str(goal_id) if goal_id else None,
             "metadata": {
                 "plan_title": plan_title,
                 "assignee_names": [a.assignee_name for a in task.assignments] if task.assignments else [],
