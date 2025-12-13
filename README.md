@@ -66,6 +66,7 @@ Upload a meeting transcript file (.txt or .pdf) and receive structured analysis.
     - `gemini_client.py`: Reusable Google Gemini API client
     - `file_processor.py`: File upload and text extraction service
 
+Deployment test
 ## Configuration
 
 Environment variables (set in `.env`):
