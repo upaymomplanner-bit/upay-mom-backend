@@ -1,5 +1,5 @@
 from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, Form
-from datetime import datetime
+from datetime import datetime, timezone
 from app.schemas.transcript import (
     MeetingExtractionResult,
     MeetingDetails,
@@ -121,7 +121,7 @@ async def upload_transcript_tasks(
 @transcript_router.post("/save", status_code=201)
 async def save_transcript(
     extracted_tasks: MeetingExtractionResult,
-    supabase_client = Depends(get_supabase_client),
+    supabase_client=Depends(get_supabase_client),
     planner_service: MicrosoftPlannerService = Depends(get_planner_service),
 ):
     """
@@ -147,16 +147,20 @@ async def save_transcript(
         meeting_id = await db_service.save_meeting(extracted_tasks)
 
         # Extract year from meeting date or use current year
-        year = datetime.utcnow().year
+        year = datetime.now(timezone.utc).year
         if extracted_tasks.meeting_date:
             try:
                 # Handle ISO format with potential Z
-                dt = datetime.fromisoformat(extracted_tasks.meeting_date.replace("Z", "+00:00"))
+                dt = datetime.fromisoformat(
+                    extracted_tasks.meeting_date.replace("Z", "+00:00")
+                )
                 year = dt.year
             except ValueError:
                 pass
 
-        task_ids = await db_service.save_tasks(meeting_id, extracted_tasks.task_groups, year=year)
+        task_ids = await db_service.save_tasks(
+            meeting_id, extracted_tasks.task_groups, year=year
+        )
 
         # Try to sync to Planner (non-blocking - errors are logged but not fatal)
         planner_sync_status = "success"
@@ -175,12 +179,12 @@ async def save_transcript(
             "task_count": len(task_ids),
             "planner_sync_status": planner_sync_status,
             "planner_error": planner_error,
-            "message": "Meeting and tasks saved successfully" if planner_sync_status == "success"
-                       else "Meeting and tasks saved, but Planner sync failed"
+            "message": "Meeting and tasks saved successfully"
+            if planner_sync_status == "success"
+            else "Meeting and tasks saved, but Planner sync failed",
         }
 
     except Exception as e:
         raise HTTPException(
-            status_code=500,
-            detail=f"Failed to save transcript: {str(e)}"
+            status_code=500, detail=f"Failed to save transcript: {str(e)}"
         )
