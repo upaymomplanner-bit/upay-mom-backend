@@ -120,7 +120,7 @@ uv pytest tests/test_integration.py::TestLiveIntegration::test_live_supabase_sav
 uv run pytest tests/test_integration.py::TestLiveIntegration::test_live_complete_gemini_to_supabase_flow -v
 ```
 
-#### Skip live tests (run only mocked tests)
+#### Skip live tests (run only mocked tests) for integration.
 
 ```bash
 uv run pytest tests/test_integration.py -m "not live" -v
