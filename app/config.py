@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from functools import lru_cache
 
 
@@ -14,11 +14,9 @@ class Settings(BaseSettings):
     microsoft_planner_container_url: str = ""
     supabase_url: str = ""
     supabase_service_role_key: str = ""
-
-    class Config:
-        env_file = (".env", ".env.development")
-        env_file_encoding = "utf-8"
-        extra = "ignore"
+    model_config = SettingsConfigDict(
+        env_file=(".env", ".env.development"), env_file_encoding="utf-8", extra="ignore"
+    )
 
 
 @lru_cache()
