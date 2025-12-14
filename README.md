@@ -4,11 +4,11 @@ A FastAPI-based backend for the UPay MOM (Minutes of Meeting) application.
 
 ## Features
 
-- 📝 **Transcript Processing**: Upload meeting transcripts (.txt or .pdf) and get structured analysis
-- 🤖 **AI-Powered Analysis**: Uses Google Gemini 2.0 Flash for intelligent transcript analysis
-- � **Native File Handling**: Gemini directly processes PDF and text files (no manual extraction needed)
-- �📊 **Structured Output**: Extracts participants, action items, decisions, and key topics
-- 🔒 **Type-Safe**: Built with Pydantic models for data validation
+- **Transcript Processing**: Upload meeting transcripts (.txt or .pdf) and get structured analysis
+- **AI-Powered Analysis**: Uses Google Gemini 2.0 Flash for intelligent transcript analysis
+- **Native File Handling**: Gemini directly processes PDF and text files (no manual extraction needed)
+- **Structured Output**: Extracts participants, action items, decisions, and key topics
+- **Type-Safe**: Built with Pydantic models for data validation
 
 ## Setup
 
