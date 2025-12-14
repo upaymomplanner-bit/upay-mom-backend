@@ -66,7 +66,6 @@ Upload a meeting transcript file (.txt or .pdf) and receive structured analysis.
     - `gemini_client.py`: Reusable Google Gemini API client
     - `file_processor.py`: File upload and text extraction service
 
-Deployment test
 ## Configuration
 
 Environment variables (set in `.env`):
@@ -81,3 +80,48 @@ Environment variables (set in `.env`):
 - **Pydantic**: Data validation using Python type annotations
 - **Google Generative AI**: Gemini API client for AI-powered analysis with native file support
 - **python-multipart**: File upload support
+
+## Testing
+
+### Prerequisites
+
+Before running live tests, ensure you have the following environment variables configured in your `.env.development` file:
+
+```bash
+GEMINI_API_KEY=your_gemini_api_key
+SUPABASE_URL=your_supabase_url
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+```
+
+### Running all tests
+
+```bash
+uv run pytest tests/ -v
+```
+
+### Running Live Tests - Integration Tests
+
+#### Run all live tests
+
+```bash
+uv run pytest tests/test_integration.py::TestLiveIntegration -m live -v
+```
+
+#### Run specific live test
+
+```bash
+# Test Gemini API only
+uv run pytest tests/test_integration.py::TestLiveIntegration::test_live_gemini_analysis -v
+
+# Test Supabase operations only
+uv pytest tests/test_integration.py::TestLiveIntegration::test_live_supabase_save_and_delete -v
+
+# Test complete end-to-end flow
+uv run pytest tests/test_integration.py::TestLiveIntegration::test_live_complete_gemini_to_supabase_flow -v
+```
+
+#### Skip live tests (run only mocked tests)
+
+```bash
+uv run pytest tests/test_integration.py -m "not live" -v
+```
