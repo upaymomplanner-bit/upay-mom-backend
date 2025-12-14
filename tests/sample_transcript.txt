@@ -1,0 +1,29 @@
+Project Planning Meeting - December 14, 2025
+
+Attendees: John Smith (john@example.com), Sarah Johnson (sarah@example.com), Mike Davis (mike@example.com)
+
+John: Good morning everyone. Let's discuss our Q1 2026 project roadmap. We need to plan out the main deliverables for the new customer portal.
+
+Sarah: Thanks John. I've been reviewing the requirements. We need to focus on three main areas: user authentication, dashboard redesign, and API integration.
+
+Mike: I can take the lead on the API integration. We should complete that by January 15th, 2026 since the other components depend on it.
+
+John: Great. Sarah, can you handle the dashboard redesign? We need that finished by January 30th, 2026.
+
+Sarah: Absolutely. I'll need to break this down into smaller tasks. First, I'll create wireframes by January 10th. Then I'll implement the frontend components, and finally do the responsive testing.
+
+John: Perfect. For the authentication system, I'll handle that myself. This is high priority since it blocks other work. I should have the OAuth integration done by January 20th, 2026.
+
+Mike: For the API integration, I'll need to do a few things. First, I'll document the API endpoints. Then I'll implement the backend services. Finally, I'll write integration tests for everything.
+
+Sarah: We should also schedule a code review meeting for late January to make sure everything is aligned before we move to QA.
+
+John: Good idea. Let's plan that for January 28th, 2026. Mike, can you send out calendar invites for that?
+
+Mike: Sure, I'll do that today.
+
+John: One more thing - we need to update our project documentation. Sarah, can you take care of that by February 5th, 2026?
+
+Sarah: Yes, I'll make sure all our technical docs and user guides are up to date.
+
+John: Excellent. Let's reconvene next week to check on progress. Meeting adjourned.
