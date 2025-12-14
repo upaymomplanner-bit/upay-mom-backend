@@ -223,7 +223,7 @@ class GeminiClient:
                 model=self.model,
                 contents=[
                     types.Part.from_bytes(data=file_data, mime_type=mime_type),
-                    "List a few popular cookie recipes, and include the amounts of ingredients.",
+                    "Create tasks based on the attached file and make sure to extract relevant information only",
                 ],
                 config=types.GenerateContentConfig(
                     response_mime_type="application/json",
